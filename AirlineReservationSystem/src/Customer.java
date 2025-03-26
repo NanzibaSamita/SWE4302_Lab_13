@@ -49,7 +49,7 @@ public class Customer {
         String name = read.nextLine();
         System.out.print("Enter your email address :\t");
         String email = read.nextLine();
-        while (isUniqueData(email)) {
+        while (isEmailAlreadyRegistered(email)) {
             System.out.println(
                     "ERROR!!! User with the same email already exists... Use new email or login using the previous credentials....");
             System.out.print("Enter your email address :\t");
@@ -88,7 +88,7 @@ public class Customer {
         }
     }
 
-    public boolean isUniqueData(String emailID) {
+    public boolean isEmailAlreadyRegistered(String emailID) {
         return customerCollection.stream()
                 .noneMatch(c -> emailID.equals(c.getEmail()));
     }
