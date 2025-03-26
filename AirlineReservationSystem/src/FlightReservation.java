@@ -9,6 +9,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
 
+
+
 public class FlightReservation implements DisplayClass {
 
     //        ************************************************************ Fields ************************************************************
@@ -136,19 +138,17 @@ public class FlightReservation implements DisplayClass {
         return addedOrNot;
     }
 
-    String flightStatus(Flight flight) {
-        boolean isFlightAvailable = false;
+    FlightStatus determineFlightStatus(Flight flight) {
         for (Flight list : flight.getFlightList()) {
             if (list.getFlightNumber().equalsIgnoreCase(flight.getFlightNumber())) {
-                isFlightAvailable = true;
-                break;
+                return FlightStatus.SCHEDULED;
             }
         }
-        if (isFlightAvailable) {
-            return "As Per Schedule";
-        } else {
-            return "   Cancelled   ";
-        }
+        return FlightStatus.CANCELLED;
+    }
+
+    private String flightStatus(Flight flight) {
+        return determineFlightStatus(flight).getDisplayName();
     }
 
     /*toString() Method for displaying number of flights registered by single user...*/

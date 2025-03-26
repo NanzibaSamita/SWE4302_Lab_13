@@ -23,6 +23,17 @@ public class Flight extends FlightDistance {
     private static int nextFlightDay = 0;
     private static final List<Flight> flightList = new ArrayList<>();
 
+    private FlightStatus status = FlightStatus.SCHEDULED;
+
+    // Add getter and setter
+    public FlightStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(FlightStatus status) {
+        this.status = status;
+    }
+
     //        ************************************************************ Behaviours/Methods ************************************************************
 
     Flight() {
