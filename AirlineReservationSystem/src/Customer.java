@@ -89,12 +89,8 @@ public class Customer {
     }
 
     public boolean isUniqueData(String emailID) {
-        for (Customer c : customerCollection) {
-            if (emailID.equals(c.getEmail())) {
-                return true;
-            }
-        }
-        return false;
+        return customerCollection.stream()
+                .noneMatch(c -> emailID.equals(c.getEmail()));
     }
 
     public void editUserInfo(String ID) {
