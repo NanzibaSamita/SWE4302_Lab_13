@@ -129,34 +129,54 @@ public class Flight extends FlightDistance {
      * @param distanceBetweenTheCities distance between the cities/airports in miles
      * @return formatted flight time
      */
+
+
     public String calculateFlightTime(double distanceBetweenTheCities) {
+        double[] hoursAndMinutes = calculateRawFlightTime(distanceBetweenTheCities);
+        return formatFlightTime(hoursAndMinutes[0], hoursAndMinutes[1]);
+    }
+
+    private double[] calculateRawFlightTime(double distance) {
         double groundSpeed = 450;
-        double time = (distanceBetweenTheCities / groundSpeed);
+        double time = (distance / groundSpeed);
         String timeInString = String.format("%.4s", time);
         String[] timeArray = timeInString.replace('.', ':').split(":");
-        int hours = Integer.parseInt(timeArray[0]);
-        int minutes = Integer.parseInt(timeArray[1]);
-        int modulus = minutes % 5;
-        // Changing flight time to make minutes near/divisible to 5.
+        return new double[] {
+                Double.parseDouble(timeArray[0]),
+                Double.parseDouble(timeArray[1])
+        };
+    }
+
+    private String formatFlightTime(double hours, double minutes) {
+        // Adjust minutes to nearest 5-minute interval
+        int modulus = (int)minutes % 5;
         if (modulus < 3) {
             minutes -= modulus;
         } else {
             minutes += 5 - modulus;
         }
+
+        // Handle overflow (when minutes >= 60)
         if (minutes >= 60) {
             minutes -= 60;
             hours++;
         }
-        if (hours <= 9 && Integer.toString(minutes).length() == 1) {
-            return String.format("0%s:%s0", hours, minutes);
-        } else if (hours <= 9 && Integer.toString(minutes).length() > 1) {
-            return String.format("0%s:%s", hours, minutes);
-        } else if (hours > 9 && Integer.toString(minutes).length() == 1) {
-            return String.format("%s:%s0", hours, minutes);
+
+        // Format based on hours and minutes length
+        boolean singleDigitHour = hours <= 9;
+        boolean singleDigitMinute = String.valueOf((int)minutes).length() == 1;
+
+        if (singleDigitHour && singleDigitMinute) {
+            return String.format("0%d:0%d", (int)hours, (int)minutes);
+        } else if (singleDigitHour) {
+            return String.format("0%d:%d", (int)hours, (int)minutes);
+        } else if (singleDigitMinute) {
+            return String.format("%d:0%d", (int)hours, (int)minutes);
         } else {
-            return String.format("%s:%s", hours, minutes);
+            return String.format("%d:%d", (int)hours, (int)minutes);
         }
     }
+
 
     /**
      * Creates flight arrival time by adding flight time to flight departure time
