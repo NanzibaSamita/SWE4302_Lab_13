@@ -2,11 +2,18 @@ import java.util.Random;
 
 public class RandomGenerator {
 
-    //        ************************************************************ Fields ************************************************************
+    // ************************************************************
+    // Constants
+    // ************************************************************
+    private static final int MIN_ID_VALUE = 20000;
+    private static final int MAX_ID_RANGE = 1000000;
+    private static final int MIN_SEATS = 75;
+    private static final int MAX_SEATS = 500;
+    private static final int ALPHABET_SIZE = 26;
+    private static final char FIRST_LETTER = 'a';
 
-    private String randomNum;
-    /*  City name is at the 0-index, its latitude is on the 1-index and longitude on the 2-index*/
-    private static final String[][] destinations = {
+    /* City name is at the 0-index, its latitude is on the 1-index and longitude on the 2-index*/
+    private static final String[][] DESTINATIONS = {
             {"Karachi", "24.871940", "66.988060"}, {"Bangkok", "13.921430", "100.595337"}, {"Jakarta", "-6.174760", "106.827072"},
             {"Islamabad", "33.607587", "73.100316"}, {"New York City", "40.642422", "-73.781749"}, {"Lahore", "31.521139", "74.406519"},
             {"Gilgit Baltistan", "35.919108", "74.332838"}, {"Jeddah", "21.683647", "39.152862"}, {"Riyadh", "24.977080", "46.688942"}, {"New Delhi", "28.555764", "77.096520"},
@@ -24,16 +31,22 @@ public class RandomGenerator {
             {"Berlin", "52.554316", "13.291213"}, {"Paris", "48.999560", "2.539274"}, {"Dubai", "25.249869", "55.366483"}
     };
 
-    //        ************************************************************ Behaviours/Methods ************************************************************
+    // ************************************************************
+    // Fields
+    // ************************************************************
+    private String randomNum;
 
+    // ************************************************************
+    // Behaviours/Methods
+    // ************************************************************
 
     /* Generates Random ID for the Customers....*/
     public void randomIDGen() {
         Random rand = new Random();
-        String randomID = Integer.toString(rand.nextInt(1000000));
+        String randomID = Integer.toString(rand.nextInt(MAX_ID_RANGE));
 
-        while (Integer.parseInt(randomID) < 20000) {
-            randomID = Integer.toString(rand.nextInt(1000000));
+        while (Integer.parseInt(randomID) < MIN_ID_VALUE) {
+            randomID = Integer.toString(rand.nextInt(MAX_ID_RANGE));
         }
         setRandomNum(randomID);
     }
@@ -41,17 +54,20 @@ public class RandomGenerator {
     /*This method sets the destinations for each of the flights from the above destinations randomly.....*/
     public String[][] randomDestinations() {
         Random rand = new Random();
-        int randomCity1 = rand.nextInt(destinations.length);
-        int randomCity2 = rand.nextInt(destinations.length);
-        String fromWhichCity = destinations[randomCity1][0];
-        String fromWhichCityLat = destinations[randomCity1][1];
-        String fromWhichCityLong = destinations[randomCity1][2];
+        int randomCity1 = rand.nextInt(DESTINATIONS.length);
+        int randomCity2 = rand.nextInt(DESTINATIONS.length);
+        String fromWhichCity = DESTINATIONS[randomCity1][0];
+        String fromWhichCityLat = DESTINATIONS[randomCity1][1];
+        String fromWhichCityLong = DESTINATIONS[randomCity1][2];
+
         while (randomCity2 == randomCity1) {
-            randomCity2 = rand.nextInt(destinations.length);
+            randomCity2 = rand.nextInt(DESTINATIONS.length);
         }
-        String toWhichCity = destinations[randomCity2][0];
-        String toWhichCityLat = destinations[randomCity2][1];
-        String toWhichCityLong = destinations[randomCity2][2];
+
+        String toWhichCity = DESTINATIONS[randomCity2][0];
+        String toWhichCityLat = DESTINATIONS[randomCity2][1];
+        String toWhichCityLong = DESTINATIONS[randomCity2][2];
+
         String[][] chosenDestinations = new String[2][3];
         chosenDestinations[0][0] = fromWhichCity;
         chosenDestinations[0][1] = fromWhichCityLat;
@@ -59,15 +75,16 @@ public class RandomGenerator {
         chosenDestinations[1][0] = toWhichCity;
         chosenDestinations[1][1] = toWhichCityLat;
         chosenDestinations[1][2] = toWhichCityLong;
+
         return chosenDestinations;
     }
 
     /*Generates the Random Number of Seats for each flight*/
     public int randomNumOfSeats() {
         Random random = new Random();
-        int numOfSeats = random.nextInt(500);
-        while (numOfSeats < 75) {
-            numOfSeats = random.nextInt(500);
+        int numOfSeats = random.nextInt(MAX_SEATS);
+        while (numOfSeats < MIN_SEATS) {
+            numOfSeats = random.nextInt(MAX_SEATS);
         }
         return numOfSeats;
     }
@@ -76,15 +93,18 @@ public class RandomGenerator {
     public String randomFlightNumbGen(int uptoHowManyLettersRequired, int divisible) {
         Random random = new Random();
         StringBuilder randomAlphabets = new StringBuilder();
+
         for (int i = 0; i < uptoHowManyLettersRequired; i++) {
-            randomAlphabets.append((char) (random.nextInt(26) + 'a'));
+            randomAlphabets.append((char) (random.nextInt(ALPHABET_SIZE) + FIRST_LETTER));
         }
+
         randomAlphabets.append("-").append(randomNumOfSeats() / divisible);
         return randomAlphabets.toString();
     }
 
-    //        ************************************************************ Setters & Getters ************************************************************
-
+    // ************************************************************
+    // Setters & Getters
+    // ************************************************************
     public void setRandomNum(String randomNum) {
         this.randomNum = randomNum;
     }
