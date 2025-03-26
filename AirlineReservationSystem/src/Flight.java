@@ -101,8 +101,16 @@ public class Flight extends FlightDistance {
      * @param customer     customer in which tickets are to be added
      * @param numOfTickets number of tickets to add
      */
+
     void addTicketsToExistingCustomer(Customer customer, int numOfTickets) {
-        customer.addExistingFlightToCustomerList(customerIndex, numOfTickets);
+        // First find the customer's index in the flight's customer list
+        int index = listOfRegisteredCustomersInAFlight.indexOf(customer);
+        if (index >= 0) {
+            // Get the customer from the flight's list
+            Customer existingCustomer = listOfRegisteredCustomersInAFlight.get(index);
+            // Add tickets to this customer's booking for this flight
+            existingCustomer.addTicketsToFlight(this, numOfTickets);
+        }
     }
 
     /***
@@ -264,7 +272,7 @@ public class Flight extends FlightDistance {
             i++;
             Flight f1 = flightIterator.next();
             System.out.println(f1.toString(i));
-             System.out.print("+------+-------------------------------------------+-----------+------------------+-----------------------+------------------------+---------------------------+-------------+--------+------------------------+\n");
+            System.out.print("+------+-------------------------------------------+-----------+------------------+-----------------------+------------------------+---------------------------+-------------+--------+------------------------+\n");
         }
     }
 

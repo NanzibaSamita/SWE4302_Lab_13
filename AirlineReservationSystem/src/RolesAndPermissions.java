@@ -8,16 +8,15 @@ public class RolesAndPermissions extends User {
      * @return -1 if admin not found, else index of the admin in the array.
      */
     public int isPrivilegedUserOrNot(String username, String password) {
-        int isFound = -1;
         for (int i = 0; i < adminUserNameAndPassword.length; i++) {
-            if (username.equals(adminUserNameAndPassword[i][0])) {
-                if (password.equals(adminUserNameAndPassword[i][1])) {
-                    isFound = i;
-                    break;
-                }
+            if (!username.equals(adminUserNameAndPassword[i][0])) {
+                continue;
+            }
+            if (password.equals(adminUserNameAndPassword[i][1])) {
+                return i;
             }
         }
-        return isFound;
+        return -1;
     }
 
     /**
