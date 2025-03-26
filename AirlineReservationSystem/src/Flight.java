@@ -120,15 +120,8 @@ public class Flight extends FlightDistance {
      * @return true if the customer is already registered in the said flight, false otherwise
      */
     boolean isCustomerAlreadyAdded(List<Customer> customersList, Customer customer) {
-        boolean isAdded = false;
-        for (Customer customer1 : customersList) {
-            if (customer1.getUserID().equals(customer.getUserID())) {
-                isAdded = true;
-                customerIndex = customersList.indexOf(customer1);
-                break;
-            }
-        }
-        return isAdded;
+        return listOfRegisteredCustomersInAFlight.stream()
+                .anyMatch(c -> c.getUserID().equals(customer.getUserID()));
     }
 
     /**
