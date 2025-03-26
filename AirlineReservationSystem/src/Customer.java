@@ -29,7 +29,7 @@ public class Customer {
 
     Customer(String name, String email, String password, String phone, String address, int age) {
         RandomGenerator random = new RandomGenerator();
-        random.randomIDGen();
+        random.generateRandomCustomerId();
         this.name = name;
         this.userID = random.getRandomNumber();
         this.email = email;

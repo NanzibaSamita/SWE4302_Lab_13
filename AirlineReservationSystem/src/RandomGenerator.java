@@ -41,7 +41,7 @@ public class RandomGenerator {
     // ************************************************************
 
     /* Generates Random ID for the Customers....*/
-    public void randomIDGen() {
+    public void generateRandomCustomerId() {
         Random rand = new Random();
         String randomID = Integer.toString(rand.nextInt(MAX_ID_RANGE));
 
